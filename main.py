@@ -1,5 +1,5 @@
-import requests,json
-your_id = input('Снилс')
+import requests
+your_id = input('Снилс ')
 
 
 headers = {
@@ -54,3 +54,4 @@ for i in spisok:
             order = int(float((id.get('GENERALORDER'))))
             break
     print(f'{dir}: {order:.0f}')
+s = input()
