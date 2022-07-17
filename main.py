@@ -67,8 +67,8 @@ def print_order(i):
 
 spisok = [data, data2, data3]
 
-# if __name__ == 'main':
-for i in spisok:
-    print_order(i)
+if __name__ == '__main__':
+    for i in spisok:
+        print_order(i)
 
 s = input()
