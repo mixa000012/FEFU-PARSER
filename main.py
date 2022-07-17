@@ -1,6 +1,6 @@
 import requests
-your_id = input('Снилс ')
 
+your_id = input('Снилс ')
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
@@ -33,25 +33,42 @@ data3 = {
     'financingSource': 'Бюджетная основа',
     'studyForm': 'Очная',
     'implementationPlace': 'Владивосток',
-    'trainingDirection': '10.03.01 Информационная безопасность',
+    'trainingDirection': '01.03.02 Прикладная математика и информатика',
     'consent': 'false',
 }
 
-spisok = [data,data2,data3]
-for i in spisok:
+
+def print_order(i):
+    global data
+    response = requests.post('https://www.dvfu.ru/bitrix/services/main/ajax.php', params=params, headers=headers,
+                             data=i).json()
     dir = ''
     if i == data:
+        dat = 'data'
         dir = 'Прикладная информатика'
     elif i == data2:
-        dir =  'Программная инженерия'
+        dat = 'data2'
+        dir = 'Программная инженерия'
     elif i == data3:
+        dat = 'data3'
         dir = 'Информационная безопасность'
-    response = requests.post('https://www.dvfu.ru/bitrix/services/main/ajax.php', params=params, headers=headers, data=i).json()
     order = ''
     data = response.get('data')
-    for id in data:
-        if your_id == id['name']:
-            order = int(float((id.get('GENERALORDER'))))
-            break
-    print(f'{dir}: {order:.0f}')
+    try:
+        for id in data:
+            if your_id == id['name']:
+                order = int(float((id.get('GENERALORDER'))))
+                break
+        print(f'{dir}: {order:.0f}')
+    except ValueError:
+        print(f'Скорее всего вы не участвуете в {dir}' '\n'
+              f'Для смены направлений нужно залезть в исходный код, поменять для {dat} параметр trainingDirection')
+
+
+spisok = [data, data2, data3]
+
+# if __name__ == 'main':
+for i in spisok:
+    print_order(i)
+
 s = input()
